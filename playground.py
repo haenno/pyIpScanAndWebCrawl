@@ -3,40 +3,46 @@
 # Licensed under the GPLv3: GNU General Public License v3.0 https://www.gnu.org/licenses/gpl-3.0.html 
 # Here: WIP playgroud
 
-import requests
-from requests.api import request
 
-#url="http://10.200.70.1"
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+
+url="http://10.200.70.1:80"
 #url="http://46.139.86.222/"
 #url="http://79.172.214.172:80"
 #url="http://61.73.249.110:80"
 #url="http://47.240.227.22/"
-url="http://51.89.120.99:80"
+#url="51.89.120.99:80"
+#url="http://80.227.133.226:80"
 
 try:
-    request_result = requests.get(url)
+    options = webdriver.ChromeOptions()
+    options.headless = True
+    driver = webdriver.Chrome(options=options)
+    driver.get(url)
+    driver_options = driver.ChromeOptions()
+    
+    screenshot = driver.save_screenshot('my_screenshot.png')
+    driver.quit()        
 
-    #print(request_result.text) #100 Zeichen? 100 Zeilen?
-    #print(request_result.content)
-    #print(request_result.status_code) # 1
-    #print(request_result.headers) # 2
-    #print(request_result.cookies) # egal
-    #print(request_result.json) 
-
-    if int(request_result.status_code == 200):
-        print("HTTP Status: 200 OK")
-        print("HTTP Headers: \n    " + str(request_result.headers))
-        print("HTTP Text-Content: \n   ")
-        #tmptxt2=request_result.text.splitlines()
-        print(request_result.text[:1000])
-        '''
-        for zeile in request_result.text.splitlines():
-            print(zeile)
-            tmptxt=tmptxt+"\n"+zeile
-            print (str(len(tmptxt)))
-        '''
-    else:
-        print("HTTP Status:" + str(request_result.status_code))
-        
 except Exception as error_message:
     print(" ==> Fehler: \n****************************************\n" + str(error_message) + "\n****************************************")
+
+
+# Backup for later
+'''
+from selenium import webdriver
+URL = 'http://www.heise.de'
+options = webdriver.ChromeOptions()
+options.headless = True
+#options.add_argument("load-extension=C:/Users/haenno/Nextcloud/BWI/git/pyIpScanAndWebCrawl/idontcareaboutcookies");
+#options.add_extension("C:/Users/haenno/Nextcloud/BWI/git/pyIpScanAndWebCrawl/idontcareaboutcookies.crx")
+driver = webdriver.Chrome(options=options)
+driver.set_window_size(1280,1024) 
+driver.get(URL)
+#sleep(1.5)
+#driver.find_element_by_tag_name('body').screenshot('web_screenshot6.png')
+driver.save_screenshot('test.png')
+driver.quit()
+'''

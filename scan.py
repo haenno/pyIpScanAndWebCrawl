@@ -5,6 +5,8 @@
 
 from time import sleep
 from datetime import datetime, timezone
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 import socket
 import ipaddress
 import threading
@@ -38,12 +40,12 @@ def check_if_subnet_is_fresh(subnet_to_check):
     scanned_subnets.close()        
     return True
 
-def save_open_host(ip, port, http_status_code, http_header, html_probe):
+def save_open_host(ip, port, filename_screenshot, http_status_code, http_header, html_probe):
     '''Takes (IP, port, HTTP status code, HTTP header) and writes it all to a list of open hosts for later usage. 
     Returns nothing.'''
     file_open_hosts = "results_open_hosts.csv"
     open_hosts = open(file_open_hosts,'a')
-    open_hosts.write(get_current_datetime_utc_iso() + ",http://" + str(ip)+":"+str(port)+","+str(http_status_code)+",\""+ http_header +"\",\"" + html_probe + "\"\n")
+    open_hosts.write(get_current_datetime_utc_iso() + ",http://" + str(ip)+":"+str(port)+","+ filename_screenshot +","+str(http_status_code)+",\""+ http_header +"\",\"" + html_probe + "\"\n")
     open_hosts.close()
 
 def get_random_new_subnet():
@@ -59,17 +61,23 @@ def get_random_new_subnet():
     return str(subnet_to_return)
 
 def check_ip(ip, port):
-    '''Takes an IP and port, tries to connect, if succeed it collects HTTP headers and writes them and the host information (IP and port) to the list of open hosts.
+    '''Takes an IP and port, tries to connect, if succeed it collects HTTP headers and HTML probe, then writes the data and the host information (IP and port) to the list of open hosts.
     Returns nothing.'''
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # TCP
-        socket.setdefaulttimeout(2.0) # seconds (float)
+        socket.setdefaulttimeout(6.0) # seconds (float)
         result = sock.connect_ex((ip,port))
         if result == 0:
-            print(" > found one: http://"+str(ip)+":"+str(port))
-            sleep(0.5)
-            http_headers = get_http_headers("http://"+str(ip)+":"+str(port))
-            save_open_host(ip, port, http_headers[0], http_headers[1], http_headers[2])
+            url= "http://"+str(ip)+":"+str(port)
+            http_headers = get_http_headers(url)
+            # make screenshot only if HTTP status code is '200 = Ok'
+            if http_headers[0] == 200:
+                filename_screenshot = make_screenshot(url)
+            else:
+                filename_screenshot = ""
+            save_open_host(ip, port, filename_screenshot, http_headers[0], http_headers[1], http_headers[2])
+            print(" > found one: " + url)
+            sleep(0.5)            
         sock.close()
     except:
         pass
@@ -88,6 +96,23 @@ def get_http_headers(url):
         html_probe = ""
     # replacing here only for saving in csv file, later to change when database is used    
     return http_status_code, http_header.replace("\"", "'").replace(",", ";").replace("\n", " ").replace("\r", " "), html_probe.replace("\"", "'").replace(",", ";").replace("\n", " ").replace("\r", " ")
+
+def make_screenshot(url):
+    '''Takes a URL and tries to make a screenshot and saves it if successful under a mostly random filename.
+    Returns filename of screenshot as string.'''
+    # Chromedriver seems to have a very poor documentation. Not all functions are working as expected. Here only with most basic functions.
+    options = webdriver.ChromeOptions()
+    #options.add_argument("load-extension=C:/Users/haenno/Nextcloud/BWI/git/pyIpScanAndWebCrawl/idontcareaboutcookies");    
+    #options.add_extension("C:/Users/haenno/Nextcloud/BWI/git/pyIpScanAndWebCrawl/idontcareaboutcookies.crx")
+    options.headless = True
+    driver = webdriver.Chrome(options=options)
+    driver.set_window_size(1280,1024) 
+    driver.get(url)
+    sleep(0.5)
+    filename = (str(url)+str(get_current_datetime_utc_iso())).replace(":"," ").replace("/","").replace("+","").replace(":","").replace(".","").replace(" ","")+".png"
+    driver.save_screenshot("screenshots/"+filename)
+    driver.quit()
+    return filename
 
 while (True):
     subnet_to_scan = ipaddress.IPv4Network(get_random_new_subnet())
