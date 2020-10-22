@@ -1,14 +1,17 @@
-# Part of https://github.com/haenno/pyIpScanAndWebCrawl
-# wip playground
+# pyIpScanAndWebCrawl 
+# Copyright (C) 2020 Henning 'haenno' Beier, haenno@web.de, https://github.com/haenno/pyIpScanAndWebCrawl 
+# Licensed under the GPLv3: GNU General Public License v3.0 https://www.gnu.org/licenses/gpl-3.0.html 
+# Here: WIP playgroud
 
 import requests
 from requests.api import request
 
-url = "http://10.200.70.1"
-#url= "http://46.139.86.222/"
+#url="http://10.200.70.1"
+#url="http://46.139.86.222/"
 #url="http://79.172.214.172:80"
 #url="http://61.73.249.110:80"
 #url="http://47.240.227.22/"
+url="http://51.89.120.99:80"
 
 try:
     request_result = requests.get(url)

@@ -1,4 +1,7 @@
-# Part of https://github.com/haenno/pyIpScanAndWebCrawl
+# pyIpScanAndWebCrawl 
+# Copyright (C) 2020 Henning 'haenno' Beier, haenno@web.de, https://github.com/haenno/pyIpScanAndWebCrawl 
+# Licensed under the GPLv3: GNU General Public License v3.0 https://www.gnu.org/licenses/gpl-3.0.html 
+# Here: Main script (current) for finding and saving open hosts
 
 from time import sleep
 import socket, ipaddress, threading, random, re
