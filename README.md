@@ -3,7 +3,7 @@ Copyright (C) 2020 Henning 'haenno' Beier, haenno@web.de, https://github.com/hae
 Licensed under the GPLv3: GNU General Public License v3.0 https://www.gnu.org/licenses/gpl-3.0.html 
 **Here: Readme**
 
-### pyIpScanAndWebCrawl 
+### About 
 Python scripts to scan random IP addresses for open and running web servers. If found it collects some details on them for later scientific evaluation. This without any manipulation of or input to the website or web server. This results in a collection of publicly accessible and viewable data of information open at anytime to anyone about websites and web servers.
 
 ### Ideas
@@ -12,8 +12,10 @@ Python scripts to scan random IP addresses for open and running web servers. If 
  - Implement running the different tasks (scanning, collecting data, making screenshots) as a service, the services then start- and stoppable over the web interface
 
 ### Changelog
+
 2020-10-24:
  - Replace storage in files with a database of some kind
+ - Changed screenshot function: Running on its own, outside of scan function. 
 
 2020-10-22: 
  - Implement collection of HTTP headers 

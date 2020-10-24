@@ -3,7 +3,7 @@
 # Licensed under the GPLv3: GNU General Public License v3.0 https://www.gnu.org/licenses/gpl-3.0.html 
 # Here: Script for finding open hosts and saving them
 
-from time import sleep
+from time import sleep,time
 from myfunctions import sqldb_execute, sqldb_query, sqldb_execute_bindings, handle_error, write_to_console
 import socket
 import ipaddress
@@ -50,7 +50,7 @@ def check_ip(ip, port):
     Returns nothing.'''
     try:
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # TCP
-        socket.setdefaulttimeout(5.0) # seconds (float)
+        socket.setdefaulttimeout(6.0) # seconds (float)
         result = sock.connect_ex((ip,port))
         if result == 0:
             url= "http://"+str(ip)+":"+str(port)
@@ -75,7 +75,10 @@ def get_http_headers(url):
         html_probe = ""
     return http_status_code, http_header, html_probe
 
-while (True):
+def loop_scan():
+    '''Starts a scan of one random subnet and saves some data on found open hosts to the DB.
+    Returns string "ok" if all threads ended in time, returns string "timeout" if timelimit is hit.'''
+    loop_timeout = time() + 30
     subnet_to_scan = ipaddress.IPv4Network(get_random_new_subnet())
     write_to_console("Scaning " + str(subnet_to_scan) + "...")
     for ip in subnet_to_scan.hosts(): 
@@ -84,5 +87,15 @@ while (True):
     while threading.active_count() != 1: 
         write_to_console(" > Remaing IPs to scan: "+ str(threading.active_count()-1))
         sleep(1.5)        
+        if time() > loop_timeout:
+            write_to_console("...Timelimit hit, starting next scan.")
+            return "timeout"
     write_to_console("...done.")
     log_new_subnet(subnet_to_scan)
+    return "ok"
+
+while True:
+    try:
+        loop_scan()
+    except Exception as error_message:
+        handle_error(error_message)
