@@ -12,11 +12,12 @@ Python scripts to scan random IP addresses for open and running web servers. If 
  - Implement running the different tasks (scanning, collecting data, making screenshots) as a service, the services then start- and stoppable over the web interface
 
 ### Changelog
- 2020-10-24:
-  - Replace storage in files with a database of some kind
- 2020-10-22: 
-  - Implement collection of HTTP headers 
-  - Implement taking screenshots of the open web servers  
+2020-10-24:
+ - Replace storage in files with a database of some kind
+
+2020-10-22: 
+ - Implement collection of HTTP headers 
+ - Implement taking screenshots of the open web servers  
 
 ### Todo
  - Check back and work again on screenshots with chromedriver (loading extensions, threading)
