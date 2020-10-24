@@ -7,13 +7,14 @@ Licensed under the GPLv3: GNU General Public License v3.0 https://www.gnu.org/li
 Python scripts to scan random IP addresses for open and running web servers. If found it collects some details on them for later scientific evaluation. This without any manipulation of or input to the website or web server. This results in a collection of publicly accessible and viewable data of information open at anytime to anyone about websites and web servers.
 
 ### Ideas
- - Replace storage in files with a database of some kind
  - Find good or common style and naming conventions and refactor accordingly
  - Implement a website to interface to the collected data (filters, sorting, previews, ...)
  - Implement running the different tasks (scanning, collecting data, making screenshots) as a service, the services then start- and stoppable over the web interface
 
 ### Changelog
- 2020-10-22: Idea finished: 
+ 2020-10-24:
+  - Replace storage in files with a database of some kind
+ 2020-10-22: 
   - Implement collection of HTTP headers 
   - Implement taking screenshots of the open web servers  
 
