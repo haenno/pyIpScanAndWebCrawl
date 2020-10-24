@@ -40,4 +40,11 @@ def handle_error(error_message):
     Returns nothing.'''
     # Todo: Think about logging.
     print(" ==> ERROR: '"+str(error_message)+"'")
-    sleep(0.1)
+    sleep(0.25)
+
+def write_to_console(message):
+    '''Takes a message as a string and writes it to the console.
+    Returns noting.'''
+    # Todo: Find out why sometimes the output is without a new line. 
+    print(str(message).rstrip())
+    sleep(0.25)
