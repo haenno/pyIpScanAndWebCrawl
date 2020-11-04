@@ -47,7 +47,7 @@ def loop_screenshots():
     Returns string "ok" if all threads ended in time, returns string "timeout" if timelimit is hit.'''
     loop_timeout = time() + 90
     write_to_console("Starting new batch of screenshots to make...")
-    workload = sqldb_query("SELECT open_hosts.id as oh_id, open_hosts.url as url FROM open_hosts WHERE open_hosts.id NOT IN (SELECT open_hosts_id FROM screenshots) AND open_hosts.http_status_code = 200 ORDER BY open_hosts.datetime ASC LIMIT 10;")
+    workload = sqldb_query("SELECT open_hosts.id as oh_id, open_hosts.url as url FROM open_hosts WHERE open_hosts.id NOT IN (SELECT open_hosts_id FROM screenshots) AND open_hosts.http_status_code = 200 ORDER BY open_hosts.datetime DESC LIMIT 15;")
     for result in workload:
         threading.Thread(name=str(result[1]), target=make_screenshot, args=[str(result[1]), str(result[0])]).start()
         sleep(0.5)
