@@ -8,7 +8,9 @@ Python scripts to scan random IP addresses for open and running web servers. If 
 
 ### TLDR:
 **Top left:** Script that scans all IP addresses from random subenets.
+
 **Top right:** Scrips that takes screenshots from IPs with running webservers.
+
 **Bottom:** As the result, the screenshots.
 
 ![GIF of the scripts running](/project_running.gif "GIF of the scripts running")
