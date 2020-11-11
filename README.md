@@ -17,13 +17,15 @@ Python scripts to scan random IP addresses for open and running web servers. If 
 
 
 ### Ideas
- - Create containers with the scrips as microservices (Docker)
  - Connect the containers with APIs (REST?)
  - Find good or common style and naming conventions and refactor accordingly
  - Implement a website to interface to the collected data (filters, sorting, previews, ...)
  - Implement running the different tasks (scanning, collecting data, making screenshots) as a service, the services then start- and stoppable over the web interface
 
 ### Changelog
+
+2020-11-11: 
+ - WIP: Set up docker environment (Create containers with the scrips as microservices)
 
 2020-11-04: 
  - Update of readme.
